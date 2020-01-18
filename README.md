@@ -10,12 +10,11 @@ The player progresses by reaching a diamond at the end of each level.
 This game was made using Unity game engine for the HackEd 2020 Hackathon.
 
 Gravity changing grappling hook game
-Grapple between points with a line
-Change direction of gravity with arrow keys
-Can only change gravity while attached to ropes
-Controls:
-WASD to change gravity direction
-SPACE to release rope
-SPACE to send out new rope to nearest rock
-Different levels that you complete by reaching checkpoint
-
+    * Grapple between points with a line
+    * Change direction of gravity with arrow keys
+    * Can only change gravity while attached to ropes
+    * Different levels that you complete by reaching checkpoint
+    * Controls:
+          * WASD to change gravity direction
+          * SPACE to release rope
+          * SPACE to send out new rope to nearest rock
