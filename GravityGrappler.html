@@ -84,6 +84,8 @@
     var gravityWell;
     var hitting;
     var success;
+    var scoreText;
+    var score = 0;
 
     function create ()
     {
@@ -117,6 +119,8 @@
         cursors = this.input.keyboard.createCursorKeys();
 
         updateGrapple();
+        score = 0;
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
 
         //Sounds
         this.sound.play('backgroundMusic');
@@ -218,6 +222,8 @@
                 child.enableBody(true, child.x, 0, true, true);
 
             });*/
+            score += 100;
+            scoreText.setText('Score: ' + score);
 
             stars = this.physics.add.group({
             key: 'star',
@@ -235,7 +241,8 @@
             hazard.setBounce(1);
             hazard.setCollideWorldBounds(true);
             hazard.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            hazard.setGravity
+            hazard.setGravity(xgrav, ygrav);
+            hazard.setMaxVelocity(maxSpeed/2, maxSpeed/2);
             // hazard.body.setBoundsRectangle();
 
         }
