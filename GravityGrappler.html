@@ -58,6 +58,7 @@
     var skey;
     var dkey;
     var tint = false;
+    var hookDown = false;
 
     function create ()
     {
@@ -91,6 +92,7 @@
         cursors = this.input.keyboard.createCursorKeys();
         scoreText = this.add.text(16, 16, 'Score: 0', {fontSize: '32px', fill: '#000'});
 
+        this.input.keyboard.on('keydown-' + 'W', function (event) { setGravity(0, -gravityValue) });
     }
 
     function createPlatforms ()
@@ -211,7 +213,13 @@
     {
         
         if (cursors.space.isDown){
-            updateGrapple()
+            if (!hookDown){
+                updateGrapple()
+                hookDown = true;
+            }
+        }
+        else {
+            hookDown = false;
         }
 
         if (cursors.left.isDown)
