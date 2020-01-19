@@ -237,7 +237,7 @@
 
             var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-            var hazard = hazards.create(x, 16, 'hazard');
+            var hazard = hazards.create(x, 16, 'hazard').setScale(0.5);
             hazard.setBounce(1);
             hazard.setCollideWorldBounds(true);
             hazard.setVelocity(Phaser.Math.Between(-200, 200), 20);
