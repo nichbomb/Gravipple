@@ -15,7 +15,8 @@
 <script type="text/javascript">
 
     var SizeY = 850;
-    var SizeX = 850;
+    var SizeX = 1450
+;
     var xgrav = 0;
     var ygrav = gravityValue;
 
@@ -48,6 +49,7 @@
         this.load.image('grapple', 'images/grapple.png');
         this.load.image('star', 'images/star.png');
         this.load.image('space', 'images/spacebackground.jpeg');
+        this.load.image('betterSpace', 'images/pexels-photo-755726.jpeg')
 
         this.load.audio('backgroundMusic', 'sounds/backgroundMusic.mp3');
         // game.load.audio('collect','collect.wav');
@@ -89,7 +91,8 @@
 
     function create ()
     {
-        this.add.image(800, 600, 'space');
+        this.add.image(SizeX/2, SizeY/2, 'betterSpace');
+        this.sound.play('backgroundMusic');
 
         platforms = this.physics.add.staticGroup();
         createPlatforms();
@@ -108,7 +111,7 @@
         grapples = this.physics.add.staticGroup({
             key: 'grapple',
             repeat: 1,
-            setXY: { x: 200, y: SizeY/2, stepX: 400 }
+            setXY: { x: SizeX/4, y: SizeY/2, stepX: SizeX/2 }
         });
 
         hazards = this.physics.add.group();
@@ -123,7 +126,7 @@
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
 
         //Sounds
-        this.sound.play('backgroundMusic');
+        
         // collect = game.add.audio('collect');
         // death = game.add.audio('death');
         // gravityChange = game.add.audio('gravityChange');
