@@ -51,9 +51,10 @@
     var platforms;
     var score = 0;
     var scoreText;
-    var gravityValue = 300;
+    var gravityValue = 400;
     var accelValue = gravityValue * 1.5;
     var grappled = false;
+    var maxSpeed = gravityValue * 2.5;
 
     var wkey;
     var akey;
@@ -91,7 +92,6 @@
 
         hazards = this.physics.add.group();
         this.physics.add.collider(player, hazards, hitHazard, null, this);
-
         this.physics.add.collider(stars, platforms);
         this.physics.add.collider(player, platforms);
         this.physics.add.overlap(player, stars, collectStar, null, this);
@@ -102,14 +102,14 @@
 
     function createPlatforms ()
     {
-        platforms.create(SizeX/2, SizeY, 'ground').setScale(4).refreshBody();
+        /*platforms.create(SizeX/2, SizeY, 'ground').setScale(4).refreshBody();
         platforms.create(SizeX/2, 0, 'ground').setScale(4).refreshBody();
         platforms.create(0, SizeY/2, 'ground').setScale(4).refreshBody();
         platforms.create(SizeX, SizeY/2, 'ground').setScale(4).refreshBody();
         var r;
         for (r = 2; r < 4; r++){
             platforms.getChildren()[r].angle += 90;
-        }
+        }*/
 
     }
 
@@ -117,6 +117,7 @@
     {
         player.setBounce(0.2);
         player.setCollideWorldBounds(true);
+        player.body.setMaxVelocity(maxSpeed, maxSpeed);
     }
 
     function createHazards ()
@@ -177,9 +178,6 @@
     function collectStar (player, star)
     {
         star.disableBody(true, true);
-
-        score += 10;
-        scoreText.setText('Score = ' + score);
 
         if (stars.countActive(true) === 0)
         {
