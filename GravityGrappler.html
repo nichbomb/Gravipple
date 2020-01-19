@@ -57,6 +57,7 @@
     var akey;
     var skey;
     var dkey;
+    var tint = false;
 
     function create ()
     {
@@ -142,7 +143,6 @@
                 closestGrappleDist = thisDist;
             }
             else {
-                console.log("i = " + i);
                 if (closestGrappleDist > thisDist)
                 {
                     closestGrapple = grapple;
@@ -157,12 +157,9 @@
 
     function getDistance (grapp)
     {
-        console.log("player x = " + player.x + "    player y = " + player.y);
-        console.log("grapp x = " + grapp.x + "     grapp y = " + grapp.y);
         x = player.x - grapp.x;
         y = player.y - grapp.y;
         dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        console.log("x = " + x + "       y = " + y);
         return dist
     }
 
@@ -200,7 +197,14 @@
     function updateGrapple ()
     {
         nearestGrapple = findClosestGrapple();
-        nearestGrapple.setTint(0xff00000);
+        if (tint == false){
+            nearestGrapple.setTint(0xff00000);
+            tint = true;
+        }
+        else {
+            nearestGrapple.setTint(0x000000);
+            tint = false;
+        }
     }
 
     function update ()
