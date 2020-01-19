@@ -51,6 +51,7 @@
     var score = 0;
     var scoreText;
     var gravityValue = 300;
+    var accelValue = gravityValue * 1.5;
     var grappled = false;
 
     var wkey;
@@ -97,6 +98,7 @@
         scoreText = this.add.text(16, 16, 'Score: 0', {fontSize: '32px', fill: '#000'});
 
         this.input.keyboard.on('keydown-' + 'W', function (event) { setGravity(0, -gravityValue) });
+        updateGrapple();
     }
 
     function createPlatforms ()
@@ -195,22 +197,25 @@
 
     }
 
+    function highlight (object, value){
+        if (value == 1)
+        {
+            object.setTint(0xffff00);
+        }
+        else if (value == 0)
+        {
+            object.setTint(0xffffff);
+        }
+        else if (value == 2)
+        {
+            object.setTint(0xff0000);
+        }
+    }
+
     function updateGrapple ()
     {
         nearestGrapple = findClosestGrapple();
-        if (isHooked){
-            isHooked = false;
-            currentHook = null;
-        }
-        else {
-            isHooked = true;
-            currentHook = findClosestGrapple();
-            if (currentHook == false) {
-              isHooked = false;
-            } else {
-              currentHookDist = getDistance(currentHook);
-            }
-        }
+        highlight(nearestGrapple, 1);
     }
 
     function update ()
@@ -218,12 +223,34 @@
         if (gameOver) {
         }
         else {
-            updateGrapple()
+            highlight(nearestGrapple, 0);
+            updateGrapple();
             if (cursors.space.isDown){
+                highlight(nearestGrapple, 2);
+                var xVal = player.x - nearestGrapple.x;
+                var yVal = player.y - nearestGrapple.y;
 
+                if (xVal < 0)
+                {
+                    player.body.setAccelerationX(accelValue);
+                }
+                else 
+                {
+                    player.body.setAccelerationX(-accelValue);
+                }
+
+                if (yVal < 0)
+                {
+                    player.body.setAccelerationY(accelValue);
+                }
+                else 
+                {
+                    player.body.setAccelerationY(-accelValue);
+                }
             }
             else {
                 hookDown = false;
+                player.body.setAcceleration(0,0);
             }
 
             if (cursors.left.isDown)
