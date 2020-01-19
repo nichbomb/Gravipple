@@ -268,16 +268,14 @@
               ydir = -1;
             }
 
-            angle = theta - phi;
+            angle =  phi - theta;
 
-            initialVelocity = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+            initialVelocity = Math.sqrt(Math.pow(velx,2) + Math.pow(vely,2));
 
             finalVelocity = initialVelocity*Math.cos(angle);
 
             finalVelocityX = xdir*finalVelocity*Math.cos(phi);
             finalVelocityY = ydir*finalVelocity*Math.sin(phi);
-            console.log("xdif = " + (velx-finalVelocityX));
-            console.log("ydif = " + (vely-finalVelocityY));
             player.body.setVelocity(finalVelocityX, finalVelocityY);
           }
         }
