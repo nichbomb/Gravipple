@@ -164,6 +164,8 @@
     {
         x = player.x - grapp.x;
         y = player.y - grapp.y;
+        dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        return dist
     }
 
     function collectStar (player, star)
@@ -193,11 +195,6 @@
 
     }
 
-    function setGravity (x, y) {
-        player.body.gravity.x = x
-        player.body.gravity.y = y
-    }
-
     function updateGrapple ()
     {
         nearestGrapple = findClosestGrapple();
@@ -221,63 +218,30 @@
         if (gameOver) {
         }
         else {
+            updateGrapple()
+            if (cursors.space.isDown){
 
-          if (cursors.space.isDown){
-              if (!hookDown){
-                  updateGrapple()
-                  hookDown = true;
-              }
-          }
-          else {
-              hookDown = false;
-          }
-
-          if (cursors.left.isDown)
-          {
-              setGravity(-gravityValue, 0)
-          }
-          else if (cursors.right.isDown)
-          {
-              setGravity(gravityValue, 0);
-          }
-          else if (cursors.up.isDown)
-          {
-              setGravity(0, -gravityValue);
-          }
-          else if (cursors.down.isDown)
-          {
-              setGravity(0, gravityValue);
-          }
-          if (isHooked) {
-            setGravity(0, 0);
-
-            x = player.x - currentHook.x;
-            y = player.y - currentHook.y;
-            theta = Math.atan(y/x);
-
-            velx = player.body.velocity.x;
-            vely = player.body.velocity.y;
-            phi = Math.atan(vely/velx);
-
-            var xdir = 1;
-            var ydir = 1;
-            if (velx < 0) {
-              xdir = -1;
             }
-            if (vely < 0) {
-              ydir = -1;
+            else {
+                hookDown = false;
             }
 
-            angle =  phi - theta;
-
-            initialVelocity = Math.sqrt(Math.pow(velx,2) + Math.pow(vely,2));
-
-            finalVelocity = initialVelocity*Math.cos(angle);
-
-            finalVelocityX = xdir*finalVelocity*Math.cos(phi);
-            finalVelocityY = ydir*finalVelocity*Math.sin(phi);
-            player.body.setVelocity(finalVelocityX, finalVelocityY);
-          }
+            if (cursors.left.isDown)
+            {
+                player.setGravity(-gravityValue, 0)
+            }
+            else if (cursors.right.isDown)
+            {
+                player.setGravity(gravityValue, 0);
+            }
+            else if (cursors.up.isDown)
+            {
+                player.setGravity(0, -gravityValue);
+            }
+            else if (cursors.down.isDown)
+            {
+                player.setGravity(0, gravityValue);
+            }
         }
     }
 
