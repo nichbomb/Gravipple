@@ -46,6 +46,14 @@
         this.load.image('grapple', 'images/grapple.png');
         this.load.image('star', 'images/star.png');
         this.load.image('space', 'images/spacebackground.jpeg');
+
+        this.load.audio('backgroundMusic', 'sounds/backgroundMusic.mp3');
+        // game.load.audio('collect','collect.wav');
+        // game.load.audio('death','death.wav');
+        // game.load.audio('gravityChange','gravityChange.wav');
+        // game.load.audio('gravityWell','gravityWell.wav');
+        // game.load.audio('hitting','hitting.wav');
+        // game.load.audio('success','success.wav');
     }
 
     var platforms;
@@ -65,6 +73,15 @@
     var gameOver = false;
     var currentHook = null;
     var currentHookDist;
+
+    //Sounds
+    var backgroundMusic;
+    var collect;
+    var death;
+    var gravityChange;
+    var gravityWell;
+    var hitting;
+    var success;
 
     function create ()
     {
@@ -96,8 +113,21 @@
         this.physics.add.collider(player, platforms);
         this.physics.add.overlap(player, stars, collectStar, null, this);
         cursors = this.input.keyboard.createCursorKeys();
-        
+
         updateGrapple();
+
+        //Sounds
+        this.sound.play('backgroundMusic');
+        // collect = game.add.audio('collect');
+        // death = game.add.audio('death');
+        // gravityChange = game.add.audio('gravityChange');
+        // gravityWell = game.add.audio('gravityWell');
+        // hitting = game.add.audio('hitting');
+        // success = game.add.audio('success');
+
+        // game.sound.setDecodedCallback([ backgroundMusic, collect, death, gravityChange, gravityWell,
+        // hitting,success ], start, this);
+
     }
 
     function createPlatforms ()
