@@ -60,6 +60,8 @@
     var hookDown = false;
     var isHooked = false;
     var gameOver = false;
+    var currentHook = null;
+    var currentHookDist;
 
     function create ()
     {
@@ -69,6 +71,7 @@
         createPlatforms();
 
         player = this.physics.add.sprite(100, 450, 'circle');
+        player.body.setCircle(20);
         createPlayer();
 
         stars = this.physics.add.group({
@@ -154,7 +157,6 @@
 
             }
         }
-        console.log("\n")
         return closestGrapple
     }
 
@@ -162,8 +164,6 @@
     {
         x = player.x - grapp.x;
         y = player.y - grapp.y;
-        dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        return dist
     }
 
     function collectStar (player, star)
@@ -187,6 +187,7 @@
             hazard.setBounce(1);
             hazard.setCollideWorldBounds(true);
             hazard.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            // hazard.body.setBoundsRectangle();
 
         }
 
@@ -202,9 +203,16 @@
         nearestGrapple = findClosestGrapple();
         if (isHooked){
             isHooked = false;
+            currentHook = null;
         }
         else {
             isHooked = true;
+            currentHook = findClosestGrapple();
+            if (currentHook == false) {
+              isHooked = false;
+            } else {
+              currentHookDist = getDistance(currentHook);
+            }
         }
     }
 
@@ -239,6 +247,38 @@
           else if (cursors.down.isDown)
           {
               setGravity(0, gravityValue);
+          }
+          if (isHooked) {
+            setGravity(0, 0);
+
+            x = player.x - currentHook.x;
+            y = player.y - currentHook.y;
+            theta = Math.atan(y/x);
+
+            velx = player.body.velocity.x;
+            vely = player.body.velocity.y;
+            phi = Math.atan(vely/velx);
+
+            var xdir = 1;
+            var ydir = 1;
+            if (velx < 0) {
+              xdir = -1;
+            }
+            if (vely < 0) {
+              ydir = -1;
+            }
+
+            angle = theta - phi;
+
+            initialVelocity = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+
+            finalVelocity = initialVelocity*Math.cos(angle);
+
+            finalVelocityX = xdir*finalVelocity*Math.cos(phi);
+            finalVelocityY = ydir*finalVelocity*Math.sin(phi);
+            console.log("xdif = " + (velx-finalVelocityX));
+            console.log("ydif = " + (vely-finalVelocityY));
+            player.body.setVelocity(finalVelocityX, finalVelocityY);
           }
         }
     }
