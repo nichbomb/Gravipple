@@ -82,7 +82,7 @@
 
     function createPlatforms ()
     {
-        platforms.create(400, 568, 'ground').setScale(4).refreshBody();
+        platforms.create(SizeX/2, SizeY, 'ground').setScale(4).refreshBody();
         platforms.create(600, 400, 'ground');
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
@@ -150,20 +150,21 @@
     {
         if (cursors.left.isDown)
         {
-            setGravity(-gravityValue, 0)
+            setGravity(-gravityValue, 0);
         }
         else if (cursors.right.isDown)
         {
-            setGravity(gravityValue, 0)
+            setGravity(gravityValue, 0);
         }
         else if (cursors.up.isDown)
         {
-            setGravity(0, -gravityValue)
+            setGravity(0, -gravityValue);
         }
         else if (cursors.down.isDown)
         {
-            setGravity(0, gravityValue)
+            setGravity(0, gravityValue);
         }
+        hazards.angle += 1;
     }
 
 </script>
