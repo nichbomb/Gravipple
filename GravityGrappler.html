@@ -15,7 +15,7 @@
 <script type="text/javascript">
 
     var SizeY = 800;
-    var SizeX = 1400;
+    var SizeX = 800;
 
     var config = {
         type: Phaser.AUTO,
@@ -42,8 +42,8 @@
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('circle', 'images/character.png');
-        this.load.image('square', 'images/square.png');
-        this.load.image('triangle', 'images/hazard.png');
+        this.load.image('hazard', 'images/hazard.png');
+        this.load.image('grapple', 'images/grapple.png');
         this.load.image('star', 'images/star.png');
     }
 
@@ -52,6 +52,11 @@
     var scoreText;
     var gravityValue = 300;
     var grappled = false;
+
+    var wkey;
+    var akey;
+    var skey;
+    var dkey;
 
     function create ()
     {
@@ -70,6 +75,12 @@
         });
         createStars();
 
+        grapples = this.physics.add.staticGroup({
+            key: 'grapple',
+            repeat: 1,
+            setXY: { x: 200, y: SizeY/2, stepX: 400 }
+        });
+
         hazards = this.physics.add.group();
         this.physics.add.collider(player, hazards, hitHazard, null, this);
 
@@ -78,14 +89,15 @@
         this.physics.add.overlap(player, stars, collectStar, null, this);
         cursors = this.input.keyboard.createCursorKeys();
         scoreText = this.add.text(16, 16, 'Score: 0', {fontSize: '32px', fill: '#000'});
+
     }
 
     function createPlatforms ()
     {
-        platforms.create(SizeX/2, SizeY, 'ground').setScale(4).refreshBody();
+        /*platforms.create(SizeX/2, SizeY, 'ground').setScale(4).refreshBody();
         platforms.create(600, 400, 'ground');
         platforms.create(50, 250, 'ground');
-        platforms.create(750, 220, 'ground');
+        platforms.create(750, 220, 'ground');*/
     }
 
     function createPlayer () 
@@ -115,6 +127,45 @@
         });
     }
 
+    function findClosestGrapple ()
+    {
+        var closestGrapple = false;
+        var closestGrappleDist = 0;
+        var grappleInstances = grapples.getChildren();
+        var i;
+        var thisDist;
+        for (i = 0; i < grappleInstances.length; i++) {
+            grapple = grappleInstances[i];
+            thisDist = getDistance(grapple)
+            if (closestGrapple == false){
+                closestGrapple = grapple;
+                closestGrappleDist = thisDist;
+            }
+            else {
+                console.log("i = " + i);
+                if (closestGrappleDist > thisDist)
+                {
+                    closestGrapple = grapple;
+                    closestGrappleDist = thisDist;
+                }
+
+            } 
+        }
+        console.log("\n")
+        return closestGrapple
+    }
+
+    function getDistance (grapp)
+    {
+        console.log("player x = " + player.x + "    player y = " + player.y);
+        console.log("grapp x = " + grapp.x + "     grapp y = " + grapp.y);
+        x = player.x - grapp.x;
+        y = player.y - grapp.y;
+        dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        console.log("x = " + x + "       y = " + y);
+        return dist
+    }
+
     function collectStar (player, star)
     {
         star.disableBody(true, true);
@@ -132,7 +183,7 @@
 
             var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-            var hazard = hazards.create(x, 16, 'triangle');
+            var hazard = hazards.create(x, 16, 'hazard');
             hazard.setBounce(1);
             hazard.setCollideWorldBounds(true);
             hazard.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -146,11 +197,22 @@
         player.body.gravity.y = y
     }
 
+    function updateGrapple ()
+    {
+        nearestGrapple = findClosestGrapple();
+        nearestGrapple.setTint(0xff00000);
+    }
+
     function update ()
     {
+        
+        if (cursors.space.isDown){
+            updateGrapple()
+        }
+
         if (cursors.left.isDown)
         {
-            setGravity(-gravityValue, 0);
+            setGravity(-gravityValue, 0)
         }
         else if (cursors.right.isDown)
         {
