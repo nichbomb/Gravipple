@@ -1,5 +1,7 @@
 # GravityGrappler #
 
+Play it here: https://www.nicholasbombardieri.com/projects/GravityGrappler/
+
 GravityGrappler is a 2d physics based game where you control a control gravity and black holes to move your character around. Try to collect stars while avoiding asteroids.
  
 Controls:
